@@ -3,7 +3,7 @@
 Filters PoliCheck Result.
 .DESCRIPTION
 This script will read data speciefied in one or more PoliCheckAllowList.yml files,
-It then reamoves all allwed entries from the PoliCheckResult 
+It then removes all allowed entries from the PoliCheckResult 
 .PARAMETER PoliCheckResultFilePath
 The Path to the PoliCheck Result. Usually named PoliCheck.sarif
 .PARAMETER ServiceDirectory
