@@ -2597,7 +2597,8 @@ class StorageCommonBlobTest(StorageTestCase):
         if self.is_live:
             mgmt_client.blob_containers.delete(resource_group.name, storage_account.name, self.container_name)
 
-    @GlobalStorageAccountPreparer()
+    @ResourceGroupPreparer(name_prefix='storagename', use_cache=True)
+    @BlobAccountPreparer(name_prefix='storagename', is_versioning_enabled=True, location="canadacentral", use_cache=True)
     def test_blob_legal_hold(self, resource_group, location, storage_account, storage_account_key):
         self._setup(storage_account, storage_account_key)
 
