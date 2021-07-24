@@ -16,7 +16,7 @@ import uuid
 from datetime import datetime, timedelta
 
 from azure.mgmt.storage import StorageManagementClient
-from devtools_testutils import BlobAccountPreparer, ResourceGroupPreparer
+from devtools_testutils import BlobAccountPreparer, ResourceGroupPreparer, CachedResourceGroupPreparer
 
 from azure.core import MatchConditions
 from azure.core.exceptions import ResourceNotFoundError, ResourceModifiedError, HttpResponseError
@@ -1343,7 +1343,7 @@ class StorageAppendBlobTest(StorageTestCase):
         self.assertIsNone(prop.is_append_blob_sealed)
         copied_blob3.append_block("abc")
 
-    @ResourceGroupPreparer(name_prefix='storagename', use_cache=True)
+    @CachedResourceGroupPreparer(name_prefix="storagetest")
     @BlobAccountPreparer(name_prefix='storagename', is_versioning_enabled=True, location="canadacentral", use_cache=True)
     def test_create_append_blob_with_immutability_policy(self, resource_group, location, storage_account, storage_account_key):
         bsc = BlobServiceClient(self.account_url(storage_account, "blob"), storage_account_key, max_block_size=4 * 1024)

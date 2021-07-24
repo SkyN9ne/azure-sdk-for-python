@@ -27,7 +27,8 @@ from azure.storage.blob import (
     BlobBlock,
     StandardBlobTier, generate_blob_sas, BlobSasPermissions, CustomerProvidedEncryptionKey,
     BlobImmutabilityPolicyMode, ImmutabilityPolicy)
-from devtools_testutils import ResourceGroupPreparer, StorageAccountPreparer, BlobAccountPreparer
+from devtools_testutils import ResourceGroupPreparer, StorageAccountPreparer, BlobAccountPreparer, \
+    CachedResourceGroupPreparer
 
 from _shared.testcase import GlobalStorageAccountPreparer, GlobalResourceGroupPreparer
 from devtools_testutils.storage import StorageTestCase
@@ -452,7 +453,7 @@ class StorageBlockBlobTest(StorageTestCase):
         self.assertEqual(content.properties.etag, put_block_list_resp.get('etag'))
         self.assertEqual(content.properties.last_modified, put_block_list_resp.get('last_modified'))
 
-    @ResourceGroupPreparer(name_prefix='storagename', use_cache=True)
+    @CachedResourceGroupPreparer(name_prefix="storagetest")
     @BlobAccountPreparer(name_prefix='storagename', is_versioning_enabled=True, location="canadacentral", use_cache=True)
     def test_put_block_with_immutability_policy(self, resource_group, location, storage_account, storage_account_key):
         self._setup(storage_account, storage_account_key)

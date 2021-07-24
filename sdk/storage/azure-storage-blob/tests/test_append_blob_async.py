@@ -1426,7 +1426,7 @@ class StorageAppendBlobAsyncTest(AsyncStorageTestCase):
         self.assertIsNone(prop.is_append_blob_sealed)
         await copied_blob3.append_block("abc")
 
-    @ResourceGroupPreparer(name_prefix='storagename', use_cache=True)
+    @CachedResourceGroupPreparer(name_prefix="storagetest")
     @BlobAccountPreparer(name_prefix='storagename', is_versioning_enabled=True, location="canadacentral", use_cache=True)
     async def test_create_append_blob_with_immutability_policy_async(self, resource_group, location, storage_account, storage_account_key):
         bsc = BlobServiceClient(self.account_url(storage_account, "blob"), storage_account_key, max_block_size=4 * 1024)

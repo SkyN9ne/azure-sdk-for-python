@@ -21,7 +21,8 @@ from azure.core.exceptions import HttpResponseError, ResourceExistsError, Resour
 from azure.core.pipeline.transport import AioHttpTransport
 from multidict import CIMultiDict, CIMultiDictProxy
 from azure.storage.blob._shared.policies import StorageContentValidation
-from devtools_testutils import ResourceGroupPreparer, StorageAccountPreparer, BlobAccountPreparer
+from devtools_testutils import ResourceGroupPreparer, StorageAccountPreparer, BlobAccountPreparer, \
+    CachedResourceGroupPreparer
 
 from azure.storage.blob import (
     BlobProperties,
@@ -189,7 +190,7 @@ class StoragePageBlobAsyncTest(AsyncStorageTestCase):
         self.assertIsNotNone(resp.get('last_modified'))
         self.assertTrue(await blob.get_blob_properties())
 
-    @ResourceGroupPreparer(name_prefix='storagename', use_cache=True)
+    @CachedResourceGroupPreparer(name_prefix="storagetest")
     @BlobAccountPreparer(name_prefix='storagename', is_versioning_enabled=True, location="canadacentral", use_cache=True)
     async def test_create_blob_with_immutability_policy(self, resource_group, location, storage_account, storage_account_key):
         bsc = BlobServiceClient(self.account_url(storage_account, "blob"), credential=storage_account_key, connection_data_block_size=4 * 1024, max_page_size=4 * 1024)

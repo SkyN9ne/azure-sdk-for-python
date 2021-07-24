@@ -46,7 +46,8 @@ from azure.storage.blob import (
     StandardBlobTier,
     BlobImmutabilityPolicyMode, ImmutabilityPolicy)
 from azure.storage.blob._generated.models import RehydratePriority
-from devtools_testutils import ResourceGroupPreparer, StorageAccountPreparer, BlobAccountPreparer
+from devtools_testutils import ResourceGroupPreparer, StorageAccountPreparer, BlobAccountPreparer, \
+    CachedResourceGroupPreparer
 from _shared.testcase import GlobalStorageAccountPreparer, GlobalResourceGroupPreparer
 from devtools_testutils.storage import StorageTestCase
 
@@ -1200,7 +1201,7 @@ class StorageCommonBlobTest(StorageTestCase):
         copy_content = copyblob.download_blob().readall()
         self.assertEqual(copy_content, self.byte_data)
 
-    @ResourceGroupPreparer(name_prefix='storagename', use_cache=True)
+    @CachedResourceGroupPreparer(name_prefix="storagetest")
     @BlobAccountPreparer(name_prefix='storagename', is_versioning_enabled=True, location="canadacentral", use_cache=True)
     def test_copy_blob_with_immutability_policy(self, resource_group, location, storage_account, storage_account_key):
         self._setup(storage_account, storage_account_key)
@@ -1802,7 +1803,7 @@ class StorageCommonBlobTest(StorageTestCase):
         self.assertTrue(container_response.ok)
 
     @pytest.mark.live_test_only
-    @ResourceGroupPreparer(name_prefix='storagename', use_cache=True)
+    @CachedResourceGroupPreparer(name_prefix="storagetest")
     @BlobAccountPreparer(name_prefix='storagename', is_versioning_enabled=True, location="canadacentral", use_cache=True)
     def test_set_immutability_policy_using_sas(self, resource_group, location, storage_account, storage_account_key):
         # SAS URL is calculated from storage key, so this test runs live only
@@ -2557,7 +2558,7 @@ class StorageCommonBlobTest(StorageTestCase):
         # Assert that the token attempts to refresh 4 times (i.e, get_token called 4 times)
         self.assertEqual(token_credential.get_token_count, 4)
 
-    @ResourceGroupPreparer(name_prefix='storagename', use_cache=True)
+    @CachedResourceGroupPreparer(name_prefix="storagetest")
     @BlobAccountPreparer(name_prefix='storagename', is_versioning_enabled=True, location="canadacentral", use_cache=True)
     def test_blob_immutability_policy(self, resource_group, location, storage_account, storage_account_key):
         self._setup(storage_account, storage_account_key)
@@ -2597,7 +2598,7 @@ class StorageCommonBlobTest(StorageTestCase):
         if self.is_live:
             mgmt_client.blob_containers.delete(resource_group.name, storage_account.name, self.container_name)
 
-    @ResourceGroupPreparer(name_prefix='storagename', use_cache=True)
+    @CachedResourceGroupPreparer(name_prefix="storagetest")
     @BlobAccountPreparer(name_prefix='storagename', is_versioning_enabled=True, location="canadacentral", use_cache=True)
     def test_blob_legal_hold(self, resource_group, location, storage_account, storage_account_key):
         self._setup(storage_account, storage_account_key)
@@ -2633,7 +2634,7 @@ class StorageCommonBlobTest(StorageTestCase):
         if self.is_live:
             mgmt_client.blob_containers.delete(resource_group.name, storage_account.name, self.container_name)
 
-    @ResourceGroupPreparer(name_prefix='storagename', use_cache=True)
+    @CachedResourceGroupPreparer(name_prefix="storagetest")
     @BlobAccountPreparer(name_prefix='storagename', is_versioning_enabled=True, location="canadacentral", use_cache=True)
     def test_download_blob_with_immutability_policy(self, resource_group, location, storage_account, storage_account_key):
         self._setup(storage_account, storage_account_key)
@@ -2674,7 +2675,7 @@ class StorageCommonBlobTest(StorageTestCase):
         if self.is_live:
             mgmt_client.blob_containers.delete(resource_group.name, storage_account.name, self.container_name)
 
-    @ResourceGroupPreparer(name_prefix='storagename', use_cache=True)
+    @CachedResourceGroupPreparer(name_prefix="storagetest")
     @BlobAccountPreparer(name_prefix='storagename', is_versioning_enabled=True, location="canadacentral", use_cache=True)
     def test_list_blobs_with_immutability_policy(self, resource_group, location, storage_account, storage_account_key):
         self._setup(storage_account, storage_account_key)
